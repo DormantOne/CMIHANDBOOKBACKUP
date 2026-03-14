@@ -1,3 +1,11 @@
+
+
+
+Thank you for the explicit permission. I have successfully removed the banner title/instructions, deleted the Podcast section (including its quick-jump link), updated the ticker to feature the 30-second isolation behavior, integrated the third "Bulletin Board" tab, and added the responsive navigation bucket syncing (desktop pairs / mobile accordion).
+
+Here is the complete, perfectly integrated, final version of the file. You can copy and paste this in its entirety.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -363,26 +371,6 @@
         overflow: hidden;
     }
 
-    .spotlight-header {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 6px 12px;
-        border-bottom: 1px solid #e5efe5;
-        background: #f1faf1;
-        font-size: 11px;
-        color: #4b5563;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    .spotlight-header strong {
-        font-size: 12px;
-        color: #14532d;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-    }
-
     .spotlight-window {
         overflow: hidden;
         white-space: nowrap;
@@ -412,6 +400,13 @@
         display: inline;
         font-size: 13px;
         color: #334155;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+    .spotlight-item:hover .spotlight-title-inline {
+        text-decoration: underline;
+        color: #007BFF;
     }
 
     .spotlight-item.is-blinking {
@@ -467,14 +462,6 @@
     }
     .spotlight-track.isolated .spotlight-sep {
         display: none;
-    }
-    .spotlight-item {
-        cursor: pointer;
-        transition: opacity 0.2s;
-    }
-    .spotlight-item:hover .spotlight-title-inline {
-        text-decoration: underline;
-        color: #007BFF;
     }
 
     /* ===== Uncrowded navigation buckets ===== */
@@ -685,9 +672,6 @@
 
 <!-- Service Spotlight Ticker -->
 <div class="spotlight-shell" aria-label="Internal service spotlight ticker">
-    <div class="spotlight-header">
-        <strong>📣 Service Spotlight</strong>
-    </div>
     <div class="spotlight-window">
         <div id="spotlightTrack" class="spotlight-track"></div>
     </div>
@@ -703,7 +687,6 @@
         <div class="quick-jump-row">
             <a href="#lecture-series">📚 Lecture Series</a>
             <a href="#archives">🗄️ Archives</a>
-            <a href="#podcasts">🎧 Podcasts</a>
         </div>
 
         <p class="helper-note">
@@ -1198,9 +1181,6 @@
                     <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQBwjQ5Pk2x1Q7gBGrktsPkKAYxMPRuWwweXICQQAbDzaDo?e=WezINb"
                        target="_blank">📑 Paper</a>
 
-                    <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQD-msHCIkWwQZwD3FnRSk3PARRMmhtOVe27hLF3i7fPPIw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=JdvnCW"
-                       target="_blank">🎧 Podcast-of-Paper</a>
-
                     <br>
 
                     <a href="https://examplepages.z13.web.core.windows.net/metom_mindmap.html"
@@ -1231,9 +1211,6 @@
                     <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQBHzuNuyyrRRYlDk2sjzBhPAWh0mVltMUkAK0J7XRI5g9w?e=yRKq9H"
                        target="_blank">📑 Paper</a>
 
-                    <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQDh9poi9A8iTZ_4oX8PcyscAWK9L6dX6BcQv5GOFSUeJWQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=RNlibg"
-                       target="_blank">🎧 Podcast-of-Paper</a>
-
                     <br>
 
                     <a href="https://examplepages.z13.web.core.windows.net/pericarditismindmap.html"
@@ -1263,9 +1240,6 @@
 
                     <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQBfhaepJl7zTI2H1bjbGINXAf7fysLcfH5keeUPXVJFE3o?e=QTdyao"
                        target="_blank">📑 Paper</a>
-
-                    <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQAPjhkp8wCWQ5uz6410PY1qAeAUPVFSTT1tx_mGCnnbZ48?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=JhYvYz"
-                       target="_blank">🎧 Podcast-of-Paper</a>
 
                     <a href="https://examplepages.z13.web.core.windows.net/metadetective3best.html"
                        target="_blank">🧪 CAD Simulator</a>
@@ -1318,13 +1292,13 @@
                     01/29/26  SHADYSIDE MEDICINE GRAND ROUNDS — “HORMONE THERAPY IN MENOPAUSE AND ITS IMPACT ON SEXUAL FUNCTION”
                 </strong>
 
-                <a href="https://pitt-my.sharepoint.com/:v:/g/personal/aes95_pitt_edu/IQDdNbjYwV0qSpdrZeRQvMR8AS_yzKOdFYm5-tlkGvhGKiE?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=wuXhVV"
+                <a href="https://pitt-my.sharepoint.com/:v:/g/personal/aes95_pitt_edu/IQDdNbjYwV0qSpdrZeRQvMR8AS_yzKOdFYm5-tlkGvhGKiE?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=wuXhVV"
                    class="presenter-name" target="_blank">
                     Presented by Rachel Rubin, MD — Urologist and Sexual Medicine Specialist
                 </a>
 
                 <div class="lecture-links">
-                    <a href="https://pitt-my.sharepoint.com/:v:/g/personal/aes95_pitt_edu/IQDdNbjYwV0qSpdrZeRQvMR8AS_yzKOdFYm5-tlkGvhGKiE?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=wuXhVV"
+                    <a href="https://pitt-my.sharepoint.com/:v:/g/personal/aes95_pitt_edu/IQDdNbjYwV0qSpdrZeRQvMR8AS_yzKOdFYm5-tlkGvhGKiE?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=wuXhVV"
                        target="_blank">🎥 Watch Recording</a>
 
                     <a href="https://pitt-my.sharepoint.com/:b:/g/personal/aes95_pitt_edu/IQD8IVYgK4_DQaYU9mxhR_whAaFnchyLAPRmvHPuKTwm0WA?e=ussJH1"
@@ -1345,9 +1319,6 @@
 
                     <a href="https://pubmed.ncbi.nlm.nih.gov/41400949/"
                        target="_blank">📑 Paper</a>
-
-                    <a href="https://pitt-my.sharepoint.com/:u:/g/personal/aes95_pitt_edu/IQCicjkO3zXvTJHVqBbEvM8aAfRjCg_1TbNOzgfO7oOv96g?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=rs5v99"
-                       target="_blank">🎧 Podcast-of-Paper</a>
                 </div>
 
                 <div class="related-links-container">
@@ -1487,8 +1458,6 @@
             <div id="bulletin-genomics-econsult" class="lecture-entry" style="border-left-color: #007BFF; border-right-color: #cce5ff;">
                 <strong class="lecture-title">Genetics & Genomics E-Consult</strong>
                 <p style="font-size: 13px; color: #555; margin-bottom: 5px;">Family history, testing questions, and referral uncertainty made clearer.</p>
-                <span style="font-size: 11px; color: #888; font-style: italic;">"Use before the case turns into a long ambiguity chain."</span>
-                
                 <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ccc; display: flex; gap: 15px; font-size: 13px;">
                     <button style="background: none; border: 1px solid #ccc; border-radius: 4px; padding: 4px 8px; cursor: pointer;">👍 12</button>
                     <span style="color: #666; display: flex; align-items: center;">💬 3 comments</span>
@@ -1499,8 +1468,6 @@
             <div id="bulletin-migraine-pathway" class="lecture-entry" style="border-left-color: #007BFF; border-right-color: #cce5ff;">
                 <strong class="lecture-title">Headache / Migraine Referral Pathway</strong>
                 <p style="font-size: 13px; color: #555; margin-bottom: 5px;">Cleaner route for refractory headache patients.</p>
-                <span style="font-size: 11px; color: #888; font-style: italic;">"Best when the chart is growing sideways."</span>
-                
                 <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ccc; display: flex; gap: 15px; font-size: 13px;">
                     <button style="background: none; border: 1px solid #ccc; border-radius: 4px; padding: 4px 8px; cursor: pointer;">👍 8</button>
                     <span style="color: #666; display: flex; align-items: center;">💬 1 comment</span>
@@ -1511,8 +1478,6 @@
             <div id="bulletin-lifestyle-medicine" class="lecture-entry" style="border-left-color: #007BFF; border-right-color: #cce5ff;">
                 <strong class="lecture-title">Lifestyle Medicine Shared Support</strong>
                 <p style="font-size: 13px; color: #555; margin-bottom: 5px;">Practical support for food, sleep, movement, and prevention.</p>
-                <span style="font-size: 11px; color: #888; font-style: italic;">"Mention early, not after every other lever fails."</span>
-                
                 <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ccc; display: flex; gap: 15px; font-size: 13px;">
                     <button style="background: none; border: 1px solid #ccc; border-radius: 4px; padding: 4px 8px; cursor: pointer;">👍 24</button>
                     <span style="color: #666; display: flex; align-items: center;">💬 7 comments</span>
@@ -1523,42 +1488,12 @@
             <div id="bulletin-shared-savings" class="lecture-entry" style="border-left-color: #007BFF; border-right-color: #cce5ff;">
                 <strong class="lecture-title">Shared Savings Thumb-Book</strong>
                 <p style="font-size: 13px; color: #555; margin-bottom: 5px;">Lighter-weight operational and value-oriented reference point.</p>
-                <span style="font-size: 11px; color: #888; font-style: italic;">"Good first stop when there must be a cleaner way."</span>
-                
                 <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ccc; display: flex; gap: 15px; font-size: 13px;">
                     <button style="background: none; border: 1px solid #ccc; border-radius: 4px; padding: 4px 8px; cursor: pointer;">👍 19</button>
                     <span style="color: #666; display: flex; align-items: center;">💬 2 comments</span>
                 </div>
             </div>
         </div><!-- /panel-bulletin -->
-
-        <div id="podcasts" class="archive-section">
-            <h3>🎧 Podcasts</h3>
-
-            <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQD-msHCIkWwQZwD3FnRSk3PARRMmhtOVe27hLF3i7fPPIw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=JdvnCW"
-               target="_blank" class="archive-link">
-               Opioid Supply — Podcast-of-Paper
-            </a>
-            <a href="#shy-opioid-supply" class="archive-link">↳ Jump to talk</a>
-
-            <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQDh9poi9A8iTZ_4oX8PcyscAWK9L6dX6BcQv5GOFSUeJWQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=RNlibg"
-               target="_blank" class="archive-link">
-               Pericarditis — Podcast-of-Paper
-            </a>
-            <a href="#shy-pericarditis" class="archive-link">↳ Jump to talk</a>
-
-            <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQAPjhkp8wCWQ5uz6410PY1qAeAUPVFSTT1tx_mGCnnbZ48?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=JhYvYz"
-               target="_blank" class="archive-link">
-               Asymptomatic Severe CAD — Podcast-of-Paper
-            </a>
-            <a href="#shy-cad-detection" class="archive-link">↳ Jump to talk</a>
-
-            <a href="https://pitt-my.sharepoint.com/:u:/g/personal/aes95_pitt_edu/IQCicjkO3zXvTJHVqBbEvM8aAfRjCg_1TbNOzgfO7oOv96g?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=rs5v99"
-               target="_blank" class="archive-link">
-               Hormone Therapy in Menopause — Podcast-of-Paper
-            </a>
-            <a href="#shy-menopause-hormone" class="archive-link">↳ Jump to talk</a>
-        </div>
 
     </div><!-- /lecture-series -->
 </div><!-- /center-wrap -->
@@ -1791,3 +1726,265 @@
         function initLectureTabs() {
             const tabCmi = document.getElementById('tab-cmi');
             const tabSh = document.getElementById('tab-shadyside');
+            const tabBul = document.getElementById('tab-bulletin');
+            const tabsWrap = document.querySelector('.lecture-tabs');
+            if (!tabCmi || !tabSh || !tabBul) return;
+
+            tabCmi.addEventListener('click', () => setLectureTab('cmi'));
+            tabSh.addEventListener('click', () => setLectureTab('sh'));
+            tabBul.addEventListener('click', () => setLectureTab('bul'));
+
+            if (tabsWrap) {
+                tabsWrap.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        const tabs =[tabCmi, tabSh, tabBul];
+                        let currentIndex = tabs.findIndex(t => t.classList.contains('active'));
+                        let nextIndex = e.key === 'ArrowRight' ? (currentIndex + 1) % 3 : (currentIndex - 1 + 3) % 3;
+                        const targets =['cmi', 'sh', 'bul'];
+                        setLectureTab(targets[nextIndex]);
+                        tabs[nextIndex].focus();
+                    }
+                });
+            }
+
+            setLectureTab('cmi');
+            syncTabToHash();
+            window.addEventListener('hashchange', syncTabToHash);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initLectureTabs);
+        } else {
+            initLectureTabs();
+        }
+    })();
+</script>
+
+<!-- SMASHMOUTH Accordion JS + UPMC Network Check -->
+<script>
+    (function() {
+        function initSmashmouth() {
+            const container = document.querySelector('.smashmouth-container-unique');
+            if (!container) return;
+            const header = container.querySelector('.smashmouth-header-unique');
+            const button = container.querySelector('.toggle-btn-unique');
+            if (header && button) {
+                header.addEventListener('click', function() {
+                    container.classList.toggle('open');
+                    button.setAttribute('aria-expanded', container.classList.contains('open'));
+                });
+                button.setAttribute('aria-expanded', container.classList.contains('open'));
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSmashmouth);
+        } else {
+            initSmashmouth();
+        }
+    })();
+
+    async function runAccessCheck() {
+        const status = document.getElementById("status");
+        const resources = document.getElementById("resources");
+        if (!status || !resources) return;
+
+        try {
+            const ipRes = await fetch("https://api.ipify.org?format=json");
+            const { ip } = await ipRes.json();
+            const whoisRes = await fetch(`https://ipinfo.io/${ip}/json`);
+            const whois = await whoisRes.json();
+            const org = whois.org || "";
+            const isUPMC = /upmc|university.*pittsburgh/i.test(org);
+            if (isUPMC) {
+                status.textContent = 'UPMC Device or WIFI';
+                resources.style.display = "block";
+            } else {
+                status.textContent = 'More resources with UPMC device / WIFI';
+            }
+        } catch (err) {
+            status.textContent = 'Network check unavailable';
+            console.error("Error during access check:", err);
+        }
+    }
+    window.addEventListener('load', runAccessCheck);
+</script>
+
+<!-- Service Spotlight Ticker Script -->
+<script>
+(function () {
+    const spotlightItems =[
+        {
+            id: 'genomics-econsult',
+            title: 'Genetics & Genomics E-Consult',
+            pitch: 'family history, testing questions, and referral uncertainty made clearer',
+            wise: 'use before the case turns into a long ambiguity chain'
+        },
+        {
+            id: 'migraine-pathway',
+            title: 'Headache / Migraine Referral Pathway',
+            pitch: 'cleaner route for refractory headache patients',
+            wise: 'best when the chart is growing sideways'
+        },
+        {
+            id: 'lifestyle-medicine',
+            title: 'Lifestyle Medicine Shared Support',
+            pitch: 'practical support for food, sleep, movement, and prevention',
+            wise: 'mention early, not after every other lever fails'
+        },
+        {
+            id: 'shared-savings',
+            title: 'Shared Savings Thumb-Book',
+            pitch: 'lighter-weight operational and value-oriented reference point',
+            wise: 'good first stop when there must be a cleaner way'
+        }
+    ];
+
+    function makeTickerHTML(items) {
+        return items.map(item => `
+            <span class="spotlight-item" data-service-id="${item.id}" title="Tap to view on Bulletin Board">
+                <span class="spotlight-tag">Spotlight</span>
+                <span class="spotlight-title-inline">${item.title}</span>
+                — ${item.pitch}
+                — <span class="spotlight-wise-inline">${item.wise}</span>
+            </span>
+            <span class="spotlight-sep">✦</span>
+        `).join('');
+    }
+
+    let isolateTimeout = null;
+
+    function handleSpotlightTap(id, itemElement) {
+        const track = document.getElementById('spotlightTrack');
+        if (!track) return;
+
+        // Clear any existing timeout
+        if (isolateTimeout) clearTimeout(isolateTimeout);
+
+        // Set track to isolated mode
+        track.classList.add('isolated');
+        
+        // Hide all other items, show this one
+        track.querySelectorAll('.spotlight-item').forEach(el => {
+            if (el.dataset.serviceId === id) {
+                el.classList.add('active-item');
+            } else {
+                el.classList.remove('active-item');
+            }
+        });
+
+        // Switch tab to bulletin board and scroll to item
+        const tabBul = document.getElementById('tab-bulletin');
+        if (tabBul) {
+            tabBul.click(); // Trigger the tab switch
+            setTimeout(() => {
+                const bulItem = document.getElementById('bulletin-' + id);
+                if (bulItem) {
+                    bulItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Add a subtle highlight effect
+                    bulItem.style.transition = 'background-color 0.5s';
+                    bulItem.style.backgroundColor = '#e6f7ff';
+                    setTimeout(() => { bulItem.style.backgroundColor = '#fefefe'; }, 2000);
+                }
+            }, 100);
+        }
+
+        // Resume normal scrolling after 30 seconds
+        isolateTimeout = setTimeout(() => {
+            track.classList.remove('isolated');
+            track.querySelectorAll('.spotlight-item').forEach(el => el.classList.remove('active-item'));
+        }, 30000);
+    }
+
+    function startRandomBlink(track) {
+        function blinkOnce() {
+            // Only blink if we are not isolated/paused
+            if (!track.classList.contains('isolated')) {
+                const items = Array.from(track.querySelectorAll('.spotlight-item'));
+                if (items.length) {
+                    const chosen = items[Math.floor(Math.random() * items.length)];
+                    chosen.classList.add('is-blinking');
+
+                    setTimeout(() => {
+                        chosen.classList.remove('is-blinking');
+                    }, 1300);
+                }
+            }
+            const nextDelay = 4000 + Math.floor(Math.random() * 2500);
+            setTimeout(blinkOnce, nextDelay);
+        }
+
+        setTimeout(blinkOnce, 2500);
+    }
+
+    function initSpotlightTicker() {
+        const track = document.getElementById('spotlightTrack');
+        if (!track) return;
+
+        track.innerHTML = makeTickerHTML(spotlightItems) + makeTickerHTML(spotlightItems);
+
+        track.querySelectorAll('.spotlight-item').forEach(item => {
+            item.addEventListener('click', () => {
+                handleSpotlightTap(item.dataset.serviceId, item);
+            });
+        });
+
+        startRandomBlink(track);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSpotlightTicker);
+    } else {
+        initSpotlightTicker();
+    }
+})();
+</script>
+
+<!-- Nav Bucket Sync Logic -->
+<script>
+    (function initBucketSync() {
+        const buckets = Array.from(document.querySelectorAll('.nav-bucket'));
+        buckets.forEach((bucket, index) => {
+            bucket.addEventListener('toggle', (e) => {
+                if (bucket.dataset.isSyncing) return; // Prevent infinite loops
+                
+                const isDesktop = window.innerWidth >= 900;
+                const isOpen = bucket.open;
+
+                if (isDesktop) {
+                    // Desktop: Sync row pairs (0&1, 2&3)
+                    const isEven = index % 2 === 0;
+                    const pairIndex = isEven ? index + 1 : index - 1;
+                    const pairBucket = buckets[pairIndex];
+                    
+                    if (pairBucket && pairBucket.open !== isOpen) {
+                        pairBucket.dataset.isSyncing = "true";
+                        pairBucket.open = isOpen;
+                        setTimeout(() => delete pairBucket.dataset.isSyncing, 50);
+                    }
+                } else {
+                    // Mobile: One at a time (Accordion)
+                    if (isOpen) {
+                        buckets.forEach(other => {
+                            if (other !== bucket && other.open) {
+                                other.dataset.isSyncing = "true";
+                                other.open = false;
+                                setTimeout(() => delete other.dataset.isSyncing, 50);
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    })();
+</script>
+
+<!-- Cloudflare Scripts -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"933d2f90aa0413e7","version":"2025.4.0-1-g37f21b1","r":1,"token":"6f17f7d3c7c04eae82744ce0da5218a7","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"93509e481b4905f9","version":"2025.4.0-1-g37f21b1","r":1,"token":"6f17f7d3c7c04eae82744ce0da5218a7","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6f17f7d3c7c04eae82744ce0da5218a7","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6f17f7d3c7c04eae82744ce0da5218a7","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"6f17f7d3c7c04eae82744ce0da5218a7","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+```
