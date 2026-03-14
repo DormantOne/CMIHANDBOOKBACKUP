@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CMI Handbook</title>
+
+<!-- PWA Requirements -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4CAF50">
+<link rel="apple-touch-icon" href="blackboard192.png">
+
+<style>
+    /* Base Styles */
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #f9f9f9;
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 16px;
+        color: #2c3e50;
+    }
+
+    .index-container,
+    .lecture-container {
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: #fff;
+        margin-bottom: 30px;
+    }
+
+    .index-container h2,
+    .lecture-container h2 {
+        font-size: 18px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+    }
+
+    .index-container h2:first-of-type {
+        margin-top: 0;
+    }
+
+    .nav-links {
+        margin-top: 10px;
+        line-height: 2;
+    }
+
+    .nav-links a {
+        display: inline-block;
+        margin-right: 16px;
+        font-weight: bold;
+        color: #4CAF50;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .nav-links a:hover {
+        color: #FF4500;
+    }
+
+    .lecture-entry {
+        margin-bottom: 25px;
+        padding: 15px;
+        border-left: 4px solid #4CAF50;
+        border-right: 4px solid #a5d6a7;
+        background-color: #fefefe;
+        border-radius: 5px;
+    }
+
+    .lecture-entry strong.lecture-title {
+        display: block;
+        font-size: 16px;
+        color: #2c3e50;
+        margin-bottom: 4px;
+    }
+
+    .lecture-entry .presenter-name {
+        display: block;
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 10px;
+        text-decoration: none;
+    }
+
+    .lecture-entry .presenter-name:hover {
+        color: #333;
+        text-decoration: underline;
+    }
+
+    .lecture-entry .lecture-links a {
+        display: inline-block;
+        margin-right: 12px;
+        font-size: 13px;
+        text-decoration: underline;
+        color: #007BFF;
+        line-height: 1.8;
+    }
+
+    .lecture-entry .lecture-links a:hover {
+        color: #FF4500;
+    }
+
+    footer {
+        margin-top: 40px;
+        font-size: 12px;
+        color: #666;
+        text-align: center;
+    }
+
+    /* ===== Lecture Series Tabs ===== */
+    .lecture-tabs {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 12px 0 18px;
+    }
+
+    .lecture-tab {
+        appearance: none;
+        border: 1px solid #ccc;
+        background: #f6f6f6;
+        color: #2c3e50;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .lecture-tab:hover {
+        border-color: #4CAF50;
+    }
+
+    .lecture-tab.active {
+        background: #4CAF50;
+        border-color: #4CAF50;
+        color: #fff;
+    }
+
+    .lecture-tab:focus {
+        outline: 2px solid rgba(0, 123, 255, 0.45);
+        outline-offset: 2px;
+    }
+
+    .lecture-panel[hidden] {
+        display: none !important;
+    }
+
+    /* App Management & PWA Styles */
+    #title-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    #shareButton {
+        margin-left: 15px;
+        padding: 0;
+        font-size: 24px;
+        color: #4CAF50;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        background: none;
+    }
+
+    #shareButton:hover {
+        color: #FF4500;
+    }
+
+    #shareButton::before {
+        content: "🔗";
+        display: inline-block;
+    }
+
+    #appManagementButtons {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    #addToHomeScreenButton,
+    #updateAppButton,
+    #showIosInstructionsButton {
+        padding: 8px 15px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 13px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    #addToHomeScreenButton {
+        background-color: #007BFF;
+        display: none;
+    }
+
+    #addToHomeScreenButton:hover {
+        background-color: #0056b3;
+    }
+
+    #updateAppButton {
+        background-color: #FF4500;
+    }
+
+    #updateAppButton:hover {
+        background-color: #cc3700;
+    }
+
+    #updateAppButton:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    #showIosInstructionsButton {
+        background-color: #555;
+        display: none;
+        font-weight: bold;
+        padding: 8px 10px;
+    }
+
+    #showIosInstructionsButton:hover {
+        background-color: #333;
+    }
+
+    #installInstructions {
+        display: none;
+        padding: 15px;
+        background-color: #eef;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 15px 0;
+        position: relative;
+    }
+
+    #dismissInstructions {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #555;
+    }
+
+    #installInstructions p,
+    #installInstructions ul {
+        font-size: 13px;
+        color: #333;
+    }
+
+    /* Content Container Styles */
+    .related-links-container {
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px dotted #ccc;
+    }
+
+    .related-links-container strong {
+        font-size: 13px;
+        color: #555;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .related-links-container a {
+        display: block;
+        font-size: 12px;
+        color: #007BFF;
+        text-decoration: underline;
+        margin-bottom: 4px;
+        word-break: break-word;
+    }
+
+    .related-links-container a:hover {
+        color: #FF4500;
+    }
+
+    .archive-link {
+        font-size: 13px;
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+        text-decoration: none;
+        word-break: break-word;
+    }
+
+    .archive-link:hover {
+        color: #007BFF;
+        text-decoration: underline;
+    }
+
+    .archive-section h3 {
+        font-size: 16px;
+        color: #333;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .feedback-link {
+        display: inline-block;
+        margin-top: 20px;
+        font-size: 13px;
+        text-decoration: none;
+    }
+
+    /* UPMC Link Checker Styles */
+    #status {
+        color: #888;
+        font-size: 0.9em;
+        margin-top: 1em;
+        min-height: 1.5em;
+    }
+
+    #resources {
+        display: none;
+        margin-top: 0.5em;
+    }
+
+    #resources a {
+        display: block;
+        margin-bottom: 0.75em;
+        font-size: 1.1em;
+        font-weight: 500;
+        color: #005a9c;
+        text-decoration: none;
+    }
+
+    #resources a:hover {
+        text-decoration: underline;
+        color: #FF4500;
+    }
+
+    /* ===== Centered single-column layout ===== */
+    .center-wrap {
+        max-width: 1000px;
+        margin: 0 auto 60px;
+    }
+
+    /* ===== Narrow ticker ===== */
+    .spotlight-shell {
+        margin: 10px auto 18px;
+        border: 1px solid #d8e9d7;
+        border-radius: 10px;
+        background: #f8fff8;
+        box-shadow: 0 3px 12px rgba(0,0,0,.04);
+        overflow: hidden;
+    }
+
+    .spotlight-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 12px;
+        border-bottom: 1px solid #e5efe5;
+        background: #f1faf1;
+        font-size: 11px;
+        color: #4b5563;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .spotlight-header strong {
+        font-size: 12px;
+        color: #14532d;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .spotlight-window {
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+        padding: 8px 0;
+    }
+
+    .spotlight-track {
+        display: inline-block;
+        white-space: nowrap;
+        will-change: transform;
+        animation: spotlight-ticker 28s linear infinite;
+        padding-left: 100%;
+    }
+
+    .spotlight-window:hover .spotlight-track,
+    .spotlight-window:focus-within .spotlight-track {
+        animation-play-state: paused;
+    }
+
+    @keyframes spotlight-ticker {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-100%); }
+    }
+
+    .spotlight-item {
+        display: inline;
+        font-size: 13px;
+        color: #334155;
+    }
+
+    .spotlight-item.is-blinking {
+        animation: spotlight-blink 0.9s steps(2, start) 3;
+    }
+
+    @keyframes spotlight-blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.15; }
+    }
+
+    .spotlight-sep {
+        color: #94a3b8;
+        margin: 0 16px;
+    }
+
+    .spotlight-tag {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: #14532d;
+        background: #dcfce7;
+        border: 1px solid #bbf7d0;
+        padding: 2px 6px;
+        border-radius: 999px;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+
+    .spotlight-title-inline {
+        font-weight: 800;
+        color: #1f2937;
+    }
+
+    .spotlight-wise-inline {
+        color: #475569;
+        font-style: italic;
+    }
+
+    /* ===== Additional Spotlight Styles for Tap-to-Isolate ===== */
+    .spotlight-track.isolated {
+        animation: none !important;
+        padding-left: 0;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        transform: translateX(0) !important;
+    }
+    .spotlight-track.isolated .spotlight-item:not(.active-item) {
+        display: none;
+    }
+    .spotlight-track.isolated .spotlight-sep {
+        display: none;
+    }
+    .spotlight-item {
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+    .spotlight-item:hover .spotlight-title-inline {
+        text-decoration: underline;
+        color: #007BFF;
+    }
+
+    /* ===== Uncrowded navigation buckets ===== */
+    .nav-buckets {
+        display: grid;
+        gap: 12px;
+        margin-top: 14px;
+    }
+
+    .nav-bucket {
+        border: 1px solid #d9e2ec;
+        border-radius: 12px;
+        background: #fff;
+        overflow: hidden;
+    }
+
+    .nav-bucket summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 13px 16px;
+        font-size: 14px;
+        font-weight: 800;
+        color: #1f2937;
+        background: #f8fafc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .nav-bucket summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .nav-bucket summary::after {
+        content: "▾";
+        font-size: 14px;
+        color: #4b5563;
+        transition: transform .2s ease;
+    }
+
+    .nav-bucket[open] summary::after {
+        transform: rotate(180deg);
+    }
+
+    .nav-bucket-content {
+        padding: 14px 16px 16px;
+        border-top: 1px solid #eef2f7;
+    }
+
+    .nav-bucket-content .nav-links {
+        margin-top: 0;
+        line-height: 1.9;
+    }
+
+    .nav-bucket-content .nav-links a {
+        margin-right: 14px;
+        margin-bottom: 2px;
+    }
+
+    .bucket-caption {
+        font-size: 12px;
+        color: #64748b;
+        margin: 0 0 10px;
+    }
+
+    .quick-jump-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 8px;
+    }
+
+    .quick-jump-row a {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid #d7e5d6;
+        background: #f8fff8;
+        text-decoration: none;
+        font-weight: 800;
+        color: #1f2937;
+    }
+
+    .quick-jump-row a:hover {
+        border-color: #4CAF50;
+        color: #14532d;
+    }
+
+    .helper-note {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #64748b;
+    }
+
+    @media (min-width: 900px) {
+        .nav-buckets {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (min-width: 1100px) {
+        body {
+            font-size: 16px;
+        }
+
+        .index-container,
+        .lecture-container {
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .lecture-entry {
+            padding: 18px 20px;
+            margin-bottom: 22px;
+            border-left-width: 5px;
+            border-right-width: 5px;
+            box-shadow: 0 4px 18px rgba(0,0,0,.06);
+            transition: box-shadow .2s ease, transform .15s ease;
+        }
+
+        .lecture-entry:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.08);
+        }
+
+        #title-container #updateAppButton {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .spotlight-track {
+            animation: none;
+            padding-left: 0;
+        }
+
+        .spotlight-item.is-blinking {
+            animation: none;
+        }
+    }
+
+    @media print {
+        #appManagementButtons,
+        #installInstructions,
+        #title-container a#shareButton,
+        .feedback-link,
+        footer,
+        script,
+        .lecture-tabs,
+        .spotlight-shell {
+            display: none !important;
+        }
+
+        body {
+            background: #fff;
+            color: #000;
+            font-size: 12pt;
+        }
+
+        .index-container,
+        .lecture-container {
+            border: none;
+            box-shadow: none;
+        }
+
+        .lecture-entry {
+            page-break-inside: avoid;
+            border-left: 4px solid #000;
+            border-right: 0;
+        }
+
+        .center-wrap {
+            max-width: none;
+            margin: 0;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- Title -->
+<div id="title-container">
+    <h1>CMI Handbook</h1>
+    <a href="https://examplepages.z13.web.core.windows.net/cmxqrnew.html" id="shareButton" title="Share Link/QR Code" target="_blank"></a>
+</div>
+
+<!-- App Management Buttons -->
+<div id="appManagementButtons">
+    <button id="updateAppButton">Clear Cache & Refresh</button>
+    <button id="showIosInstructionsButton" title="Add to iPhone/iPad Home Screen">[↑]</button>
+    <button id="addToHomeScreenButton">Add to Home Screen</button>
+</div>
+
+<!-- iOS Install Instructions -->
+<div id="installInstructions">
+    <button id="dismissInstructions" title="Dismiss">×</button>
+    <p>To add this app to your home screen for quick access:</p>
+    <p><strong>iOS (iPhone/iPad):</strong></p>
+    <ul>
+        <li>Tap the <strong>Share</strong> button [↑] - middle icon at the bottom of the screen</li>
+        <li>Scroll down the options and tap <strong>Add to Home Screen</strong>.</li>
+        <li>Confirm the name and tap <strong>Add</strong>.</li>
+    </ul>
+    <p style="font-size:11px;color:#555;margin-top:10px;">(This creates a shortcut on your home screen, like an app.)</p>
+</div>
+
+<!-- Service Spotlight Ticker -->
+<div class="spotlight-shell" aria-label="Internal service spotlight ticker">
+    <div class="spotlight-header">
+        <strong>📣 Service Spotlight</strong>
+    </div>
+    <div class="spotlight-window">
+        <div id="spotlightTrack" class="spotlight-track"></div>
+    </div>
+</div>
+
+<!-- Centered single-column wrapper -->
+<div class="center-wrap">
+
+    <!-- Index Container -->
+    <div class="index-container">
+        <h2>📍 Main Navigation</h2>
+
+        <div class="quick-jump-row">
+            <a href="#lecture-series">📚 Lecture Series</a>
+            <a href="#archives">🗄️ Archives</a>
+            <a href="#podcasts">🎧 Podcasts</a>
+        </div>
+
+        <p class="helper-note">
+            CMI first, then Clinical. Consultant links are pinned to the top of Clinical.
+        </p>
+
+        <div class="nav-buckets">
+
+            <details class="nav-bucket" open>
+                <summary>💰 CMI</summary>
+                <div class="nav-bucket-content">
+                    <p class="bucket-caption">Program, performance, and shared-savings items.</p>
+                    <div class="nav-links">
+                        <a href="https://cmihandbookprototype.z13.web.core.windows.net/sharedsavingsinfo4.html" target="_blank">⭐ MY STAR STATUS</a>
+                        <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/EZS5Z5zndPFGowUro9gOWq0B5IL-GNlz5UyBQun289YxeQ?email=CMI-Physicians%40UPMC.EDU&e=EjwkuO" target="_blank">📜 Bonus Rules</a>
+                        <br>
+                        <a href="https://vector.shadysidehandbook.info:8084" target="_blank">💰 Shared Savings Thumb-Book</a>
+                    </div>
+                </div>
+            </details>
+
+            <details class="nav-bucket" open>
+                <summary>🩺 Clinical</summary>
+                <div class="nav-bucket-content">
+                    <p class="bucket-caption">Consult support first, then point-of-care references.</p>
+                    <div class="nav-links">
+                        <a href="https://cmihandbook.com/findconsultantemailcomposer.html"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           title="Compose a structured consult email">
+                            🧑‍⚕️ Find a Consultant
+                        </a>
+
+                        <a href="https://cmihandbookprototype.z13.web.core.windows.net/fuzzyconsultantfinder.html"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           title="Prototype fuzzy consultant finder built from prior queries (limited database)">
+                            [limited database]
+                        </a>
+                        <br>
+                        <a href="https://upmchs.sharepoint.com/sites/infonet/search/Pages/results.aspx?k=antibiogram#k=antibiogram#l=1033" target="_blank" title="View the current antibiogram">🧬 Antibiogram</a>
+                        <a href="https://cmihandbook.com/calcstuff.html" target="_blank">🧮 Select Calculators</a>
+                    </div>
+                </div>
+            </details>
+
+            <details class="nav-bucket">
+                <summary>🧪 Experimental</summary>
+                <div class="nav-bucket-content">
+                    <p class="bucket-caption">Prototype surfaces and exploratory utilities.</p>
+                    <div class="nav-links">
+                        <a href="https://cmihandbookprototype.z13.web.core.windows.net/exp.html" target="_blank">⚙️ Exploratory Features</a>
+                    </div>
+                </div>
+            </details>
+
+            <details class="nav-bucket">
+                <summary>🌐 Outside Links</summary>
+                <div class="nav-bucket-content">
+                    <p class="bucket-caption">Useful external references.</p>
+                    <div class="nav-links">
+                        <a href="https://www.openevidence.com" target="_blank">🔍 Open Evidence</a>
+                    </div>
+                </div>
+            </details>
+
+            <details class="nav-bucket">
+                <summary>🏥 UPMC Access Resources</summary>
+                <div class="nav-bucket-content">
+                    <p class="bucket-caption">These become more useful on a UPMC device or UPMC Wi-Fi.</p>
+                    <div id="status"></div>
+                    <div id="resources">
+                        <a href="https://www.uptodate.com/contents/search?unid=%5Eu&srcsys=EZPX39624%3F%20" target="_blank">UpToDate</a>
+                        <a href="http://www.micromedexsolutions.com/micromedex2/librarian/" target="_blank">Micromedex</a>
+                    </div>
+                </div>
+            </details>
+
+        </div>
+    </div>
+
+    <!-- Lecture Container -->
+    <div id="lecture-series" class="lecture-container">
+        <h2>📚 Lecture Series
+            <a
+                href="sms:4123124424"
+                style="margin-left:10px;font-size:0.70em;font-weight:600;color:#6b7280;text-decoration:none;vertical-align:middle;"
+                onclick="alert('Attendance code is at the end of the video OR at the bottom of the Take-Home. Valid for 2 weeks from the lecture date.');"
+            ><span aria-hidden="true">📱</span> attendance</a>
+        </h2>
+
+        <!-- Tabs -->
+        <div class="lecture-tabs" role="tablist" aria-label="Lecture Series Toggle">
+            <button id="tab-cmi" class="lecture-tab active" role="tab" aria-selected="true" aria-controls="panel-cmi" tabindex="0">
+                CMI Lectures
+            </button>
+            <button id="tab-shadyside" class="lecture-tab" role="tab" aria-selected="false" aria-controls="panel-shadyside" tabindex="-1">
+                SHY Grand Rounds
+            </button>
+            <button id="tab-bulletin" class="lecture-tab" role="tab" aria-selected="false" aria-controls="panel-bulletin" tabindex="-1">
+                Bulletin Board
+            </button>
+        </div>
+
+        <!-- Panel: CMI (DEFAULT) -->
+        <div id="panel-cmi" class="lecture-panel" role="tabpanel" aria-labelledby="tab-cmi">
+
+            <div class="nav-links" style="margin: 0 0 14px 0;">
+                <a href="https://dormantone.github.io/payloadprompt/educationseries.html"
+                   target="_blank" rel="noopener"
+                   style="
+                       display:inline-block;
+                       padding:10px 14px;
+                       border-radius:10px;
+                       background:#5b21b6;
+                       color:#fff;
+                       font-weight:900;
+                       letter-spacing:0.08em;
+                       text-transform:uppercase;
+                       text-decoration:none;
+                       box-shadow:0 6px #3b1578, 0 0 16px rgba(124,58,237,0.25);
+                   "
+                   onmousedown="this.style.transform='translateY(2px)'; this.style.boxShadow='0 3px #3b1578, 0 0 10px rgba(124,58,237,0.18)';"
+                   onmouseup="this.style.transform='translateY(0px)'; this.style.boxShadow='0 6px #3b1578, 0 0 16px rgba(124,58,237,0.25)';"
+                >
+                    🤖 ASK GRAND ROUNDS
+                </a>
+            </div>
+
+            <div id="cmi-precision-medicine" class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">
+                    01/29/26  Primary Care Educational Session - Primary Care Precision Medicine at UPMC
+                </strong>
+
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQAd2Q9IeEpaQKzBHed7OQh4AR3jrkcmY84QIvJ3QWRW8Z8?e=MPhdWh"
+                   class="presenter-name"
+                   target="_blank">
+                    Presented by Dr. Mylynda Massart
+                </a>
+
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/znidba_upmc_edu/IQCkVZ5ZEFUwRJYm2lR2WPI8ATkeFfZPYiF-fZXv5j8I6Q4?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=cKJnEv"
+                       target="_blank">
+                        🎥 Watch Recording
+                    </a>
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQAvjuqHzxaNS7PM6FD8SEUiAVZ25lEi69l8zy4TlgE5PZ8?e=FcSlRH"
+                       target="_blank">
+                        📄 Transcript
+                    </a><br>
+
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQCldOMEJ5xHQooN3luTBmtXAcDFLuhmNzs7E14Z7r3LzsQ?e=FOlzZq"
+                       target="_blank">
+                        🧾 Take-Home
+                    </a>
+                    <a href="https://examplepages.z13.web.core.windows.net/geneticsmindmap.html"
+                       target="_blank">
+                        🗺 Mind Map
+                    </a><br>
+
+                    <a href="https://dormantone.github.io/payloadprompt/educationseries.html"
+                       target="_blank">
+                        🤖 Discuss with AI
+                    </a>
+                </div>
+
+                <p style="margin-top:0.6em;">
+                    <a href="sms:4123124424?body=PUNVAL" style="font-size:0.75em;font-weight:normal;">
+                        <strong>📱 Text Attendance Code: PUNVAL</strong>
+                    </a><br>
+                    <span style="font-size:0.65em;color:gray;">[until 02/12/2026]</span>
+                </p>
+
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQC_POBIDyxcTITdnoBrCCwnAXT3ATyYww0RSZbNeT7u_As?e=8vlzFX"
+                       target="_blank">
+                        E-CONSULT LINK
+                    </a>
+                    <a href="https://www.upmcphysicianresources.com/specialties/genetics-genomics#sort=date%20descending&layout=card"
+                       target="_blank">
+                        UPMC GENETICS &amp; GENOMICS RESOURCES
+                    </a>
+                </div>
+            </div>
+
+            <!-- Lecture Entry: Prostate Cancer -->
+            <div class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">
+                    11/20/25  Prostate Cancer Screening, Diagnosis &amp; Treatment
+                </strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQCX_2KDbQPRTK6fZx5MNQk2AbYScXjcc48pfmS3KT-5S8c?e=c9P8t2"
+                   class="presenter-name"
+                   target="_blank">
+                    Presented by Dr. Quoc-Dien Trinh
+                </a>
+
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/znidba_upmc_edu/IQD5cKHANkTARoMC0Brdw5VNAdvHj_S-GpmVmrFlFBEqmpc?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=FOD5XT"
+                       target="_blank">
+                        🎥 Watch Recording
+                    </a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQAg0Fp2RqybQ7fqT3QjyycyAcd9Nnme40ErF_NmC_P5V6Q?e=ZXjGxB"
+                       target="_blank">
+                        📄 Transcript
+                    </a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQBRknIdKSPAQJuzAnrTRYd0AUaDivMnFjum1HXkH8TgsTU?e=duBzce"
+                       target="_blank">
+                        🧾 Take-Home
+                    </a>
+                    <a href="https://examplepages.z13.web.core.windows.net/prostatemindmap.html"
+                       target="_blank">
+                        🗺 Mind Map
+                    </a><br>
+                    <a href="https://examplepages.z13.web.core.windows.net/proastate_prompt_builder.html"
+                       target="_blank">
+                        🤖 Discuss with AI
+                    </a>
+                </div>
+
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQDDDcOiR-_SR6jYB5waO__QATYRrMjGj4GLbsSoeTazMlY?e=QhUZOi"
+                       target="_blank">
+                        PROSTATE CANCER TALK SLIDES
+                    </a>
+                    <a href="https://riskcalc.org/PCPTRC/" target="_blank">RISK CALCULATOR</a>
+                </div>
+            </div>
+
+            <!-- Lecture Entry: UPMC Primary Care Service Line Forum -->
+            <div id="cmi-service-line-forum" class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">9/15/25  UPMC Primary Care Service Line Forum</strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/ESc0Ldu1pIFDpli1x-83JH8B6HNi2ukvjWIN-_CNWDwSpw?e=XycMaZ" class="presenter-name" target="_blank">
+                    Speakers: Eric Frankel, MD; Joel Nelson, MD; Doug Smith; Chet Ho, MD; Bob Edwards, MD; Melissa Kovtun
+                </a>
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/collinslawa_upmc_edu/EXaKpl1WZs5EtITa8mqTHPUBNunBNj-azF_sz2j76rGQoQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=7kbUWf" target="_blank">🎥 Watch Recording</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EU42X8lCyB1Orp1p3rjhNqMBC-YvJr-Yjm4hCfFzboAHEg?e=Duuu6D" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EYMHJ4yHdl5EpkkHGqDE7QUB7QP8C_54MHZbqbuvczXDyw?e=jBM9lD" target="_blank">🧾 Take-Home</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EbpcYYB0rvlAisD-_YkwWXMB0yrRt1v3SCMZd4vy_S-gBQ?e=WTs32Q" target="_blank">🗺 Mind Map</a><br>
+                    <a href="https://examplepages.z13.web.core.windows.net/sharedprompt.html" target="_blank">🤖 Discuss with AI</a>
+                </div>
+            </div>
+
+            <!-- Lecture Entry: Migraine -->
+            <div id="cmi-migraine" class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">9/10/25  Optimizing Migraine Diagnosis and Management in Primary Care</strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EYvDWgs4d5RMpGI4lHI-Ny4BpSVguCStJauMnPtj5QYTLQ?e=KH5gzS" class="presenter-name" target="_blank">Presented by Dr. Jose Abad and Dr. Megan Trenz</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs.sharepoint.com/:v:/s/CMIRFPProviderEducationSeries/EdgqjGbkb9ZEqLXkvOb1YR0BP0SrPooNLPEJa2IeQ1sjZg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=fqKKep" target="_blank">🎥 Watch Recording</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EddlV4DwRQNLoUz61sHE6p8BgSw8Ts3AO3qJlNAKXykl6Q?e=l7o60G" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EX1e9Wb-jLxIg-ZgLi-r-dMB7-3hcuWXl_Mw_fEUA9bC7g?e=iBSJck" target="_blank">🧾 Take-Home</a>
+                    <a href="https://examplepages.z13.web.core.windows.net/migrainemindmap.html" target="_blank">🗺 Mind Map</a><br>
+                    <a href="https://examplepages.z13.web.core.windows.net/migrainepayloadprompt.html" target="_blank">🤖 Discuss with AI</a>
+                </div>
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/ERMbx-bZCDZEtAegnQcW6DABtmioLv-8P-htkdBaiGH8kg?e=rG6vHq" target="_blank">🪙 Dr. Abad's Dot Phrases</a>
+                    <a href="https://upmchs.sharepoint.com/:b:/s/CMIRFPProviderEducationSeries/EWMIjPqvV9tPmah41U6s2GMBO61YB89paLoDRVMODrHS_A?e=cw6NQA" target="_blank">MIGRAINE TALK SLIDES</a>
+                    <a href="https://www.upmc.com/services/neurology/services/headache-center" target="_blank">UPMC HEADACHE CENTER</a>
+                </div>
+            </div>
+
+            <!-- Lecture Entry: Lifestyle Medicine -->
+            <div id="cmi-lifestyle-medicine" class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">7/9/25  Lifestyle Medicine – Essential Component of Primary Care</strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/ES5rCSrJOCRArtEO802QrTIBr2ZkaJjDCfYdOdnuFxBkhg?e=m6E19h" class="presenter-name" target="_blank">Presented by Dr. Michelle Thompson</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/znidba_upmc_edu/EYRIKxWF3y9AsV_zib6vHS0BDZtyLcT6zeE1bTjNTdm0GQ?e=c7nDck&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D" target="_blank">🎥 Watch Recording</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EZs3fVpCPUxFuQro4VgeRt0BjIgCr4uE_jOmWIeRmMGZkQ?e=tLwkwz" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EQjYOg8HcLdLrFrvUVgNiHkBPbEDt9M2Efj7iVKQQ09d_g?e=GaPwia" target="_blank">🧾 Take-Home</a><br>
+                    <a href="https://examplepages.z13.web.core.windows.net/lifexword.html" target="_blank">🧩 Crossword</a>
+                    <a href="https://examplepages.z13.web.core.windows.net/lifemindmap.html" target="_blank">🗺 Concept Map</a><br>
+                    <a href="https://examplepages.z13.web.core.windows.net/life_prompt.html" target="_blank">🤖 Discuss with AI</a>
+                </div>
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://examplepages.z13.web.core.windows.net/LifeStyleMedicinedot.html" target="_blank">🪙 Dr. Thompson's Dot Phrases</a>
+                    <a href="https://www.wholeheartedmedicine.org/resources" target="_blank">Dr. Thompson's Lifestyle Medicine</a>
+                    <a href="https://www.youtube.com/@UPMCLifestyleMed" target="_blank">Dr. Thompson's Six Pillars</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/ETtBx3m0nQRGnmHXMvgDPw0Be5iqX-ngyZFbsr3riV6BHA?e=2bkXO9" target="_blank">Epic Orders</a>
+                    <a href="https://portal.lifestylemedicine.org/ACLM/Education/Campaigns/White-House/WHconference-SignIn.aspx?gad_source=1&gad_campaignid=22244306802&gbraid=0AAAAACxTjYTu6QsY1N4b02e6bCr3zEPuN&gclid=CjwKCAjw7MLDBhAuEiwAIeXGIVw3CmitxMF0ab895ZKJfii8qEtIgZy8v0JMMjKnbOzf7x46ZcAf9xoCjiUQAvD_BwE" target="_blank">Lifestyle Medicine 5.5 CME</a>
+                </div>
+            </div>
+
+            <!-- Lecture Entry: Lyme Disease -->
+            <div class="lecture-entry">
+                <strong class="lecture-title">5/7/25: DIAGNOSIS AND TREATMENT OF LYME DISEASE IN PA &amp; MEASELS</strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/ESG5wcbtVqxPnWLgtfypqM8BSzQxTDXomgduS7J_tLjNFg?e=jO9qiD" class="presenter-name" target="_blank">Presented by Dr. Andrew Nowalk</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs.sharepoint.com/:v:/s/CMIRFPProviderEducationSeries/Ec87bpo1zrFLmy3FL5mcKO4BBAqom-Om5vz5yaX3dKlHHg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=neiVRO" target="_blank">🎥 Watch</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/Ef6g2swuHgdIqnYtoX9F-CcBDh4E_zefneq8SYQQwz9bEw?e=LM2KH3" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EXCb1-OuofpEj1VKfgfTp1UBe9Q60MJLAiU24t9am4CTLg?e=PjaWw1" target="_blank">🧾 Take-Home</a><br>
+                    <a href="https://examplepages.z13.web.core.windows.net/lymexword.html" target="_blank">🧩 Crossword</a>
+                    <a href="https://examplepages.z13.web.core.windows.net/lymemindmap.html" target="_blank">🗺 Concept Map</a><br>
+                    <a href="https://examplepages.z13.web.core.windows.net/lymeprompt.html" target="_blank">🤖 Discuss with AI</a>
+                </div>
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/EQPNvA3i5BRKjZvDi_Tx-EABc18WNez96svXAkTGdHEbHQ?e=aQoHre" target="_blank">Lecture Handout</a>
+                </div>
+            </div>
+
+            <!-- Lecture Entry: Resistant HTN -->
+            <div class="lecture-entry">
+                <strong class="lecture-title">3/12/25: DIFFICULT TO TREAT / RESISTANT HYPERTENSION</strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EQz6Jvwh_-hDhMIDqIOvR_0BxUp9NCvcrQm8Z2L3whegLg?e=wreclI" class="presenter-name" target="_blank">Presented by Dr. Blaise Abramovitz</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/znidba_upmc_edu/Ed_xy4mJzh5PhQkYset1BA0B5xbfTVeJ60fpIiuCv373fg?e=iqdhYd" target="_blank">🎥 Watch</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EUyilnsbJepAvd22oCr8vRwBNtKH-5jfLXblfKw5IzgCnw?e=6SxF1f" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EWbUVOIZwCpJjte0pBUBPIEBL0co32hsu5gcnqrgow01kQ?e=k2aZKi" target="_blank">🧾 Take-Home</a><br>
+                    <a href="https://dormantone.github.io/cutandpaste/htnxword.html" target="_blank">🧩 Crossword</a>
+                    <a href="https://examplepages.z13.web.core.windows.net/mindmaphtn.html" target="_blank">🗺 Concept Map</a><br>
+                    <a href="https://dormantone.github.io/cutandpaste/htnprompt.html" target="_blank">🤖 Discuss with AI</a>
+                </div>
+
+                <!-- SMASHMOUTH collapsible -->
+                <div class="smashmouth-container-unique">
+                    <div class="smashmouth-header-unique">
+                        <h3>SMASHMOUTH Approach to Resistant Hypertension</h3>
+                        <button class="toggle-btn-unique" aria-label="Expand SMASHMOUTH details">▼</button>
+                    </div>
+                    <div class="smashmouth-content-unique">
+                        <ul>
+                            <li><strong>S:</strong> Spironolactone</li>
+                            <li><strong>M:</strong> Medication regimen optimization</li>
+                            <li><strong>A:</strong> Adherence assessment</li>
+                            <li><strong>S:</strong> Secondary etiologies workup</li>
+                            <li><strong>H:</strong> Home BP measurements</li>
+                            <li><strong>M:</strong> Medications which raise BP review</li>
+                            <li><strong>O:</strong> Obstructive sleep apnea screening</li>
+                            <li><strong>U:</strong> Underdosed medications check</li>
+                            <li><strong>T:</strong> Table salt (dietary sodium intake) reduction</li>
+                            <li><strong>H:</strong> Herbal supplements review</li>
+                        </ul>
+                    </div>
+                </div>
+                <style>
+                    .smashmouth-container-unique { width: 100%; max-width: 450px; margin: 15px 0; border: 1px solid #ccc; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 12px; }
+                    .smashmouth-header-unique { background-color: #f0f8ff; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid #ccc; }
+                    .smashmouth-header-unique h3 { margin: 0; font-size: 14px; color: #2c3e50; font-weight: 600; }
+                    .toggle-btn-unique { background: none; border: none; font-size: 12px; color: #2c3e50; cursor: pointer; transition: transform .3s ease; padding: 0; }
+                    .smashmouth-content-unique { max-height: 0; overflow: hidden; transition: max-height .3s ease; background-color: #fff; }
+                    .smashmouth-container-unique.open .smashmouth-content-unique { max-height: 400px; }
+                    .smashmouth-container-unique.open .toggle-btn-unique { transform: rotate(180deg); }
+                    .smashmouth-content-unique ul { list-style: none; padding: 12px; margin: 0; }
+                    .smashmouth-content-unique li { padding: 3px 0; border-bottom: 1px dotted #eee; font-size: 11px; line-height: 1.3; }
+                    .smashmouth-content-unique li:last-child { border-bottom: none; }
+                    .smashmouth-content-unique strong { color: #333; }
+                </style>
+
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EcGTLdqV4vdCtzAm8ZOD0vYB0-9SjyeWJtNJx4ESHMle7A?e=yYnPAn" target="_blank">Request Ambulatory BP Monitoring</a>
+                    <a href="https://www.validatebp.org/" target="_blank">Find Validated Blood Pressure Cuffs</a>
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/EUW_0vCh2CBMpNspxmJ22ycBfTmye0mCXuhZH4FzEHKUXQ?e=wWAX6x" target="_blank">Work-Up Hypertension Guide</a>
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/EZGCUdZUnsZDlvJ6a_o2IKEBDZ0XcN_SH9HlHMYT5OqiLw?e=P4hw0y" target="_blank">Manage/Treat Hypertension Guide</a>
+                </div>
+            </div>
+
+            <!-- Lecture Entry: Arthritis -->
+            <div class="lecture-entry">
+                <strong class="lecture-title">1/8/25: OVERVIEW OF HIP AND KNEE ARTHRITIS AND TREATMENT</strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EZSpaBlQYxNKtUcm7aNvfxwBvfqIYzK_gwogz2RTRh30cA?e=aFDQp4" class="presenter-name" target="_blank">Presented by Dr. Joseph Kromka</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/znidba_upmc_edu/EUvUBkO29whFlqoeGCfAiEMBaKpTzB42VLgJ4e06KdF5vg?e=ZktkJf" target="_blank">🎥 Watch</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/ESAeJ3xaSZBKggykJ7ag9M0Bcju5frszinKoWqp3nFi9eg?e=Xnw9cD" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EcoiQD3Fl5xKspsGUy_He0oBCngHf8fwB1S6OHh9pE9vyw?e=uGpNmc" target="_blank">🧾 Take-Home</a><br>
+                    <a href="https://dormantone.github.io/cutandpaste/jointxword.html" target="_blank">🧩 Crossword</a>
+                    <a href="https://dormantone.github.io/cutandpaste/jointprompt.html" target="_blank">🤖 Discuss with AI</a>
+                </div>
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://www.aaos.org/quality/quality-programs/clinical-practice-guidelines/" target="_blank">AAOS Clinical Practice Guidelines</a>
+                    <a href="https://www.aaos.org/globalassets/quality-and-practice-resources/dental/dental-2024/prevention-of-total-hip-and-knee-arthroplasty-pji-in-patients-undergoing-dental-procedures-cpg.pdf" target="_blank">AAOS Dental Prophylaxis Guidelines</a>
+                </div>
+            </div>
+
+            <!-- Lecture Entry: CKD -->
+            <div class="lecture-entry">
+                <strong class="lecture-title">11/6/24: ADVANCES IN CHRONIC KIDNEY DISEASE MANAGEMENT</strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/ESM5owCu__xKucbk8b1nFbgBQ2uaJTRfXFvgNjCYuIqmQw" class="presenter-name" target="_blank">Presented by Dr. Manisha Jhamb</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs.sharepoint.com/:v:/s/CMIRFPProviderEducationSeries/EWlP9mifMoVHqnkvtAWksQQBJMpEYK0ZADBsthpmzbJ-ig" target="_blank">🎥 Watch</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EWTP7UKoINdPuTT1j0rPTBQBW3GFHlfVz7z6TxBUvR6qhg?e=VOFkLy" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EayBa58zeL9FhRTbMqrOB1MBBgf6zKo33ZhboUWpSPHj4w" target="_blank">🧾 Take-Home</a><br>
+                    <a href="https://dormantone.github.io/cutandpaste/renalxword.html" target="_blank">🧩 Crossword</a>
+                    <a href="https://dormantone.github.io/cutandpaste/renalprompt.html" target="_blank">🤖 Discuss with AI</a>
+                </div>
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://kidneyfailurerisk.com/" target="_blank">Kidney Failure Risk Calculator</a>
+                    <a href="https://nowpatient.com/medications/farxiga" target="_blank">Farxiga Prescription Programs</a>
+                    <a href="https://www.veltassa.com/patient/savings-affordability" target="_blank">Veltassa Prescription Programs</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EVtKlGI84yVCquAoFGx2KUgBmqaLS8mYiyAb_u3sr_MVOA?e=WRrLyI">EPIC E-Consult Order Code: ECR00101</a>
+                </div>
+            </div>
+
+            <!-- Lecture Entry: Vaccinations -->
+            <div class="lecture-entry">
+                <strong class="lecture-title">9/11/24: VACCINATIONS UPDATE FOR 2024</strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EeCdJNuNMf1JnQl5nnbMYvoBjbD117xvSi8ZkMomT9_rtA" class="presenter-name" target="_blank">Presented by Dr. Donald Middleton</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/znidba_upmc_edu/EZMMB09gX39OrkNTW37xiWUBjPBUJLAZN_uqlzSy5W8RJA" target="_blank">🎥 Watch</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EdlilWXjg1JNlqOi2SIIpYQB3NM_tHsKBJIXlX86MTmGIA" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EddjtiEhuvVOoid6NioybzABujW9HFTTn4pjMr_aK1Z47w" target="_blank">🧾 Take-Home</a><br>
+                    <a href="https://dormantone.github.io/cutandpaste/vacxword.html" target="_blank">🧩 Crossword</a>
+                    <a href="https://dormantone.github.io/cutandpaste/iphoneprompttest.html" target="_blank">🤖 Discuss with AI</a>
+                </div>
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://vaers.hhs.gov/" target="_blank">VAERS</a>
+                    <a href="https://www.cdc.gov/vaccines/hcp/imz-schedules/adult-age.html" target="_blank">CDC Adult Vaccination Schedule</a>
+                    <a href="https://www.cdc.gov/flu/" target="_blank">CDC Flu Information</a>
+                    <a href="https://covid.cdc.gov/covid-data-tracker" target="_blank">COVID Data Tracker</a>
+                    <a href="https://www.immunize.org/" target="_blank">Immunization Action Coalition</a>
+                    <a href="https://www.cdc.gov/travel" target="_blank">CDC Travel Vaccination Information</a>
+                </div>
+            </div>
+
+            <!-- Lecture Entry: OSA -->
+            <div class="lecture-entry">
+                <strong class="lecture-title">7/11/2024: OBSTRUCTIVE SLEEP APNEA</strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EaepVjM_BHdKt5mPj7eVVgoBfiNdX6S78-E8z28wdtwRpg" class="presenter-name" target="_blank">Presented by Dr. Mazen El Ali</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs.sharepoint.com/:v:/s/CMIRFPProviderEducationSeries/EWOcS92VkHhMvs_ad3MWDgUBuNTaLR3J-b4tdsu8ZkHNvg" target="_blank">🎥 Watch</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EabZLglOX_RKmZe5JGoQaYEBJpaatC0fvqiArQStsWNanA" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/ET92bT-tB7ZKv_ACUxy_S_RkBqOJ8koj5o-dE4_fGAmy6Tg" target="_blank">🧾 Take-Home</a>
+                    <a href="https://dormantone.github.io/cutandpaste/iphoneosa.html" target="_blank">🤖 Discuss with AI</a>
+                </div>
+            </div>
+
+            <!-- Archives -->
+            <div id="archives" class="archive-section">
+                <h3>🗄️ Archives</h3>
+                <a href="https://upmchs.sharepoint.com/:v:/s/CMIRFPProviderEducationSeries/EVCVuXry_RpNtx3U1oNpHckBViC-Z_PRGsra7AUglIEoyQ" target="_blank" class="archive-link">5/15/24: PMR and Temporal Arteritis Fast Track Program</a>
+                <a href="https://upmchs.sharepoint.com/:v:/s/CMIRFPProviderEducationSeries/EXXepenKpF5GmDE-iiZx_AkBwaAmeSPlZem936YXvNn-4g" target="_blank" class="archive-link">3/6/24: Obesity Pharmacotherapy</a>
+                <a href="https://upmchs.sharepoint.com/:v:/s/CMIRFPProviderEducationSeries/EThPdEiXsKVNjFxj5s27844Bf2jBS7J-ol2Ce1kIC8p33A" target="_blank" class="archive-link">1/10/24: Eval &amp; Rx of Microcytic and Macrocytic Anemia</a>
+                <a href="https://upmchs.sharepoint.com/:v:/s/CMIRFPProviderEducationSeries/EREBFwiHZetAkwmcSJcGdegBmUWyHirUcINR326cANA1Rg" target="_blank" class="archive-link">11/8/23: Latest updates for the Treatment of Diabetes 2023</a>
+                <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/znidba_upmc_edu/EZsP8X5dE8FPjMPzyu0YJUkBH0baHMlu1bTZsRGuGeTGVA" target="_blank" class="archive-link">(Archive) Town Hall November 2024</a>
+                <a href="https://upmchs.sharepoint.com/:v:/s/CMIAdministratorDocuments/Ed1_5TOJK59BrphdOoT2CT8BmD52nL81Rm43PgJ29UZR3g" target="_blank" class="archive-link">(Archive) Town Hall September 2024</a>
+            </div>
+
+            <a href="https://forms.office.com/r/JWQzxVCXGe" target="_blank" class="feedback-link nav-links">✉️ Submit Comments/Suggestions Here</a>
+        </div><!-- /panel-cmi -->
+
+        <!-- Panel: Shadyside Grand Rounds -->
+        <div id="panel-shadyside" class="lecture-panel" role="tabpanel" aria-labelledby="tab-shadyside" hidden>
+
+            <div class="nav-links" style="margin: 0 0 14px 0;">
+                <a href="https://dormantone.github.io/payloadprompt/grandrounds2.html"
+                   target="_blank" rel="noopener"
+                   style="
+                       display:inline-block;
+                       padding:10px 14px;
+                       border-radius:10px;
+                       background:#5b21b6;
+                       color:#fff;
+                       font-weight:900;
+                       letter-spacing:0.08em;
+                       text-transform:uppercase;
+                       text-decoration:none;
+                       box-shadow:0 6px #3b1578, 0 0 16px rgba(124,58,237,0.25);
+                   "
+                   onmousedown="this.style.transform='translateY(2px)'; this.style.boxShadow='0 3px #3b1578, 0 0 10px rgba(124,58,237,0.18)';"
+                   onmouseup="this.style.transform='translateY(0px)'; this.style.boxShadow='0 6px #3b1578, 0 0 16px rgba(124,58,237,0.25)';"
+                >
+                    🤖 ASK GRAND ROUNDS
+                </a>
+            </div>
+
+            <div id="shy-opioid-supply" class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">
+                    02/26/26 SHADYSIDE MEDICINE GRAND ROUNDS — “OPIOID SUPPLY: ESSENTIALS OF OPIOID AND ALPHA AGONIST WITHDRAWAL MANAGEMENT”
+                </strong>
+
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQDGd2GX_EO9SawNbYZe-G5rAW6KP0yN9mlTm0LrtQJUl_E?e=XoQCGm"
+                   class="presenter-name" target="_blank">
+                    Presented by Roberto Leon-Barriera, MD and Mike Rudnac, DO
+                </a>
+
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQBVY9JoXQ5kT4K72vS_BiM9AXaF-R_S2LUsBeZR3RG35ec?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=ySDUou"
+                       target="_blank">🎥 Watch Recording</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQAJPS2g_LwVSLX5p472I_AmATzxaUvkxKaJf6Lg1z9v3Mc?e=Jgvgf3"
+                       target="_blank">📄 Transcript</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQAP6XH67SxTQaALRT8Ywj9lAVXacUV5C9tMZKJ4zBujCbs?e=RihGe6"
+                       target="_blank">🧾 Take-Home</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQBwjQ5Pk2x1Q7gBGrktsPkKAYxMPRuWwweXICQQAbDzaDo?e=WezINb"
+                       target="_blank">📑 Paper</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQD-msHCIkWwQZwD3FnRSk3PARRMmhtOVe27hLF3i7fPPIw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=JdvnCW"
+                       target="_blank">🎧 Podcast-of-Paper</a>
+
+                    <br>
+
+                    <a href="https://examplepages.z13.web.core.windows.net/metom_mindmap.html"
+                       target="_blank">🧠 Mindmap</a>
+                </div>
+            </div>
+
+            <div id="shy-pericarditis" class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">
+                    02/19/26  SHADYSIDE MEDICINE GRAND ROUNDS — “PERICARDITIS”
+                </strong>
+
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQDbsNTeEwI5Tp695kd-7wJuAaX7pp-XudwTYg47p-lvvI4?e=DIbV4N"
+                   class="presenter-name" target="_blank">
+                    Presented by Josh Levenson, MD
+                </a>
+
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQAUiSPuPWKhS5Ms5o17JR9pAf4_eGGBhOjiq5_JABNj1E0?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=Sut5hw"
+                       target="_blank">🎥 Watch Recording</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQAK4nVuF3_bRZQQaN5afIybAReW-I4wPzyLFDjdq-MoVFA?e=2KKrkm"
+                       target="_blank">📄 Transcript</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQAyOcsrfDRmT6R15qB4cQhJAQSt9RFMDw7ooVC845ICsAY?e=aKAa5v"
+                       target="_blank">🧾 Take-Home</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQBHzuNuyyrRRYlDk2sjzBhPAWh0mVltMUkAK0J7XRI5g9w?e=yRKq9H"
+                       target="_blank">📑 Paper</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQDh9poi9A8iTZ_4oX8PcyscAWK9L6dX6BcQv5GOFSUeJWQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=RNlibg"
+                       target="_blank">🎧 Podcast-of-Paper</a>
+
+                    <br>
+
+                    <a href="https://examplepages.z13.web.core.windows.net/pericarditismindmap.html"
+                       target="_blank">🧠 Mindmap</a>
+                </div>
+            </div>
+
+            <div id="shy-cad-detection" class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">
+                    02/12/26  SHADYSIDE MEDICINE GRAND ROUNDS — “ASYMPTOMATIC SEVERE CORONARY ARTERY DISEASE - FROM DETECTION TO DECISIONS - DO WE KNOW THE PROPER MANAGEMENT?”
+                </strong>
+
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQBUT6dUhiqCQInWp82rA4MRAS58fXYw6lDYd_aJVcr36o4?e=ay0jHj"
+                   class="presenter-name" target="_blank">
+                    Presented by Krishna V. Tummalapalli, MD, FACC, FSCAI
+                </a>
+
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQB0CvEqnaJPQYFtE_PICZyoAWtP_xT-7kvdu9Akm7qlUxY?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=vdfxPI"
+                       target="_blank">🎥 Watch Recording</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQDzKVi1tKI3SrEd-ncvi7OTASqgo935VtOwHd1Zf97JLtU?e=3LiWBz"
+                       target="_blank">📄 Transcript</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQDyJG7mFO-6S5ASxLhiDO5rAUn9FHYa-mo33iYBqOEdmsw?e=d4WHHV"
+                       target="_blank">🧾 Take-Home</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQBfhaepJl7zTI2H1bjbGINXAf7fysLcfH5keeUPXVJFE3o?e=QTdyao"
+                       target="_blank">📑 Paper</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQAPjhkp8wCWQ5uz6410PY1qAeAUPVFSTT1tx_mGCnnbZ48?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=JhYvYz"
+                       target="_blank">🎧 Podcast-of-Paper</a>
+
+                    <a href="https://examplepages.z13.web.core.windows.net/metadetective3best.html"
+                       target="_blank">🧪 CAD Simulator</a>
+
+                    <br>
+
+                    <a href="https://examplepages.z13.web.core.windows.net/cadtestmindmap.html"
+                       target="_blank">🧠 Mindmap</a>
+
+                    <a href="https://dormantone.github.io/payloadprompt/chestpaintest.html"
+                       target="_blank">✅ Appropriate Testing</a>
+                </div>
+            </div>
+
+            <div class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">
+                    02/05/26  SHADYSIDE MEDICINE GRAND ROUNDS — “SPONTANEOUS CORONARY ARTERY DISSECTION” (ATTENDANCE CODE: QOCKUK)
+                </strong>
+
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQCUwkqWBSFwTrzgBxHIe_VlAfmGssYYAuBRABVcEC5vQMs?e=sTGNUT"
+                   class="presenter-name" target="_blank">
+                    Presented by Agnes Koczo, MD, MS
+                </a>
+
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQBB-dLbFatORoL3MA1CtspjAYAr6tAWMNA7jyOJj-kWa0g?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=PUldFm"
+                       target="_blank">🎥 Watch Recording</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQBNKGxZaMPxQq8CAKt0_7hVASfXCMNDBf4rILoVjZ2adMY?e=i9vxZ0"
+                       target="_blank">📄 Transcript</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQBWstOXhN0aS4E7JWOs9SVGAcvKwD0nCA6g4KAEjcN4fa0?e=gJdYv2"
+                       target="_blank">🧾 Take-Home</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQB1sH6fuxaJRps_LhnIUffhAZMl2t2vMyUSDqqgS4GX41c?e=DHQKs6"
+                       target="_blank">📑 Paper</a>
+
+                    <br>
+
+                    <a href="https://dormantone.github.io/payloadprompt/grandrounds2.html"
+                       target="_blank">🤖 Discuss G.R. w/ AI</a>
+
+                    <a href="https://examplepages.z13.web.core.windows.net/scadmindmap.html"
+                       target="_blank">🧠 Mindmap</a>
+                </div>
+            </div>
+
+            <div id="shy-menopause-hormone" class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">
+                    01/29/26  SHADYSIDE MEDICINE GRAND ROUNDS — “HORMONE THERAPY IN MENOPAUSE AND ITS IMPACT ON SEXUAL FUNCTION”
+                </strong>
+
+                <a href="https://pitt-my.sharepoint.com/:v:/g/personal/aes95_pitt_edu/IQDdNbjYwV0qSpdrZeRQvMR8AS_yzKOdFYm5-tlkGvhGKiE?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=wuXhVV"
+                   class="presenter-name" target="_blank">
+                    Presented by Rachel Rubin, MD — Urologist and Sexual Medicine Specialist
+                </a>
+
+                <div class="lecture-links">
+                    <a href="https://pitt-my.sharepoint.com/:v:/g/personal/aes95_pitt_edu/IQDdNbjYwV0qSpdrZeRQvMR8AS_yzKOdFYm5-tlkGvhGKiE?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=wuXhVV"
+                       target="_blank">🎥 Watch Recording</a>
+
+                    <a href="https://pitt-my.sharepoint.com/:b:/g/personal/aes95_pitt_edu/IQD8IVYgK4_DQaYU9mxhR_whAaFnchyLAPRmvHPuKTwm0WA?e=ussJH1"
+                       target="_blank">📄 Transcript</a>
+
+                    <a href="https://pitt-my.sharepoint.com/:w:/g/personal/aes95_pitt_edu/IQBmLQUZz2YlQ79_u3BGO34eASbS5bk12Hk8-gP3oB1Vrk8?e=TEL11B"
+                       target="_blank">🧾 Take-Home</a>
+
+                    <br>
+
+                    <a href="https://dormantone.github.io/payloadprompt/grandrounds2.html"
+                       target="_blank">🤖 Discuss G.R. w/ AI</a>
+
+                    <a href="https://examplepages.z13.web.core.windows.net/postmenohealthmindmap.html"
+                       target="_blank">🧠 Mindmap</a>
+
+                    <br>
+
+                    <a href="https://pubmed.ncbi.nlm.nih.gov/41400949/"
+                       target="_blank">📑 Paper</a>
+
+                    <a href="https://pitt-my.sharepoint.com/:u:/g/personal/aes95_pitt_edu/IQCicjkO3zXvTJHVqBbEvM8aAfRjCg_1TbNOzgfO7oOv96g?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=rs5v99"
+                       target="_blank">🎧 Podcast-of-Paper</a>
+                </div>
+
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://rachelrubinmd.com" target="_blank" rel="noopener">website: rachelrubinmd.com</a>
+                    <br><a href="https://x.com/drrachelrubin" target="_blank" rel="noopener">twitter: @drrachelrubin</a>
+                    / <a href="https://x.com/ashleygwinter" target="_blank" rel="noopener">@ashleygwinter</a>
+                    <br><a href="https://www.instagram.com/drrachelrubin/" target="_blank" rel="noopener">instagram: @drrachelrubin</a>
+                    / <a href="https://www.instagram.com/drkatherineklos/" target="_blank" rel="noopener">@drkatherineklos</a>
+                    / <a href="https://www.instagram.com/drchristinevaccaro/" target="_blank" rel="noopener">@drchristinevaccaro</a>
+                    / <a href="https://www.instagram.com/ashleygwinter/" target="_blank" rel="noopener">@ashleygwinter</a>
+                    <br><a href="https://www.youtube.com/@DrRachelRubin" target="_blank" rel="noopener">youtube: youtube.com/@DrRachelRubin</a>
+                </div>
+            </div>
+
+            <div class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">
+                    01/15/26  SHADYSIDE MEDICINE GRAND ROUNDS — “TESTICULAR CANCER FOR THE INTERNIST”
+                </strong>
+
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQDZ6M5Swa56RLB84fEBYiQRAdNCpzr6vDgU0GrTvkH6hgo?e=s8dwa8"
+                   class="presenter-name" target="_blank">
+                    Presented by P. Dafe Ogagan, MD
+                </a>
+
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQCT2_3hy15pQbZacB_sEdQGAaQi_C-iKDCfLc4Sev-RKr8?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=iFTUG0"
+                       target="_blank">🎥 Watch Recording</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQBYqqytqUahT7vl0dpM4382ARN5n4u5SXiqdSQaNe5NACE?e=eABBe1"
+                       target="_blank">📄 Transcript</a>
+
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQBxv6C1MEI1TL6JEDocS8avAYROzCCgv-XtSolPQBOGR68?e=quK5i6"
+                       target="_blank">🧾 Take-Home</a>
+
+                    <br>
+
+                    <a href="https://examplepages.z13.web.core.windows.net/testicular_prompt_builder.html"
+                       target="_blank">🤖 Discuss G.R. w/ AI</a>
+
+                    <a href="https://examplepages.z13.web.core.windows.net/testicular_mind_map.html"
+                       target="_blank">🧠 Mindmap</a>
+                </div>
+            </div>
+
+            <div class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">01/08/26  Shadyside Medicine Grand Rounds — “Lifestyle, Integrative, and Mind-Body Medicine Approaches for Menopause” </strong>
+                <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/ES5rCSrJOCRArtEO802QrTIBr2ZkaJjDCfYdOdnuFxBkhg?e=m6E19h" class="presenter-name" target="_blank">Presented by Michelle L Thompson, DO, AOBFP, ABOIM, DipABLM, FACLM</a>
+                <div class="lecture-links">
+                    <a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_MzBjZTFlNmEtMzg2YS00OWU3LWEyYjMtMTdhYmFmODY3YjAy%40thread.v2/0?context=%7b%22Tid%22%3a%228b3dd73e-4e72-4679-b191-56da1588712b%22%2c%22Oid%22%3a%2267b31f65-b259-4e95-9faf-2075efa55a37%22%7d" target="_blank">🎥 Watch Recording</a>
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQCwXPV0qoRrSZ8BGjAiGHznATB9v8pQK6nBaRzUzrm9qkA?e=thnp2Z" target="_blank">📄 Transcript</a>
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQDg8rAxR9VCQJRhmeAA9wzCAYBUTnPGnleY97DFkK1lE5k?e=Ne2a1s" target="_blank">🖼️ Slides</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQCKFeiWz-GLSKJ2bWJqrUVqAYZ7sbSkZgElVIklVfi7DOg?e=Zam8os" target="_blank">🧾 Take-Home</a><br>
+                    <a href="https://examplepages.z13.web.core.windows.net/lifestyle_prompt_builder.html" target="_blank">🤖 Discuss G.R. w/ AI</a>
+                    <a href="https://examplepages.z13.web.core.windows.net/shy_lifestyle_mind_map.html" target="_blank">🧠 Mindmap</a>
+                </div>
+
+                <div class="related-links-container">
+                    <strong>Related Links:</strong>
+                    <a href="https://acrobat.adobe.com/id/urn:aaid:sc:VA6C2:4ba7e829-8a5e-4439-b2e9-4bb4f944c345" target="_blank" rel="noopener">
+                        🪙 Dot Phrase: .LMMENOTOOLKITACLM
+                    </a>
+                    <br><a href="https://dormantone.github.io/menoshopper/" target="_blank" rel="noopener">
+                        🥗 Experimental Food App: MenoShopper
+                    </a>
+                </div>
+            </div>
+
+            <div class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">12/11/25  Shadyside Medicine Grand Rounds — “How can we treat the afflictions of American health care?” </strong>
+                <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQCf3kkV1eAhQ7pB4_N42b9mAYQHYUv2Lefvo84ZobrV0Kg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=iD8FWy" class="presenter-name" target="_blank">Presented by Martin Shapiro, MD</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQCf3kkV1eAhQ7pB4_N42b9mAYQHYUv2Lefvo84ZobrV0Kg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=iD8FWy" target="_blank">🎥 Watch Recording</a>
+                    <a href="https://upmchs-my.sharepoint.com/:b:/g/personal/sohnae_upmc_edu/IQDeujoZOfLyQ6euwWZM-55sAd2kzTYinXAm30wP1oRTgIQ?e=0XHGac" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQCAk_8oyCarQJBGLmIP9FSYAXJDuwvbcQfTz9bhouac42U?e=EdLxcd" target="_blank">🧾 Take-Home</a>
+                </div>
+            </div>
+
+            <div class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">12/04/25  Shadyside Medicine Grand Rounds — “Aligning Quality Integrity with Organizational Goals” </strong>
+                <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQAOim4A8ROuTpy8ubWSD5s7AfoFaf-nifKPECUP94l7xe0?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=jnbSEz" class="presenter-name" target="_blank">Presented by Nathan Evans, MD, FACP (Col, USAF (Ret.))</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQAOim4A8ROuTpy8ubWSD5s7AfoFaf-nifKPECUP94l7xe0?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=jnbSEz" target="_blank">🎥 Watch Recording</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQBPFUZQZ1A3SqSkWbzJph9bAdTUEa6B2M27lVQ10EBJqk4?e=ZH1std" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQBPFUZQZ1A3SqSkWbzJph9bAdTUEa6B2M27lVQ10EBJqk4?e=ZH1std" target="_blank">🧾 Take-Home</a>
+                </div>
+            </div>
+
+            <div class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">11/20/25  Shadyside Medicine Grand Rounds — “Update in Hypertension” </strong>
+                <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQAiZxvS6IfVS4cukpSotmubARJIYF1aABsMLINoc8bAZTM?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=4yTJTW" class="presenter-name" target="_blank">Presented by Evan Ray, MD PhD FASN</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/IQAiZxvS6IfVS4cukpSotmubARJIYF1aABsMLINoc8bAZTM?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=4yTJTW" target="_blank">🎥 Watch Recording</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQCwNWq-PcvPSJcwMaqYh4fRAd_xuVpL_uFfGt4JpSd4Kow?e=XMcAns" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/IQDeVLfPuRjoQ6qd8xd7cMVXAcT2qVGGEwMwKOLJs-EtMLU?e=UWFjW6" target="_blank">🧾 Take-Home</a>
+                    <a href="https://examplepages.z13.web.core.windows.net/htnmindmap.html" target="_blank">🗺 Mind Map</a><br>
+                    <a href="https://examplepages.z13.web.core.windows.net/htn_prompt_builder.html" target="_blank">🤖 Discuss with AI</a>
+                </div>
+            </div>
+
+            <div class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">11/06/25  Shadyside Medicine Grand Rounds — “Myths and Medicine: Evolving from Eminence- to Evidence-Based Medicine” </strong>
+                <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/Ea5e9U0jHg1PnfVUeTmPrjwBdlDXKYO9L6Vf-u4Ij8Oijg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=Soo1og" class="presenter-name" target="_blank">Presented by Brad Spellberg, MD</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/Ea5e9U0jHg1PnfVUeTmPrjwBdlDXKYO9L6Vf-u4Ij8Oijg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=Soo1og" target="_blank">🎥 Watch Recording</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/Eawm9tqdjQ5Jg2Tih1o5JysBGlAXDet6EjtuBt3o5c9o3g?e=hz9Svy" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/Eep4aQK4Ej9MtBopPUSGn5MBg2LblZrzUZtosVLEE9evaA?e=2lhhSh" target="_blank">🧾 Take-Home</a>
+                </div>
+            </div>
+
+            <div class="lecture-entry">
+                <strong class="lecture-title" style="text-transform: uppercase;">10/30/25  Shadyside Medicine Grand Rounds — “Harnessing AI for Healthcare: Making It Work for Physicians”</strong>
+                <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/EX5Q1nAxreFOnpwZOt1NXdEBA2IwhrRPnCZz_Qt4I1R7mQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=cTup1f" class="presenter-name" target="_blank">Presented by Paul Tang, MD, MS (Annual Cooper Lectureship)</a>
+                <div class="lecture-links">
+                    <a href="https://upmchs-my.sharepoint.com/:v:/g/personal/odonwl_upmc_edu/EX5Q1nAxreFOnpwZOt1NXdEBA2IwhrRPnCZz_Qt4I1R7mQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=cTup1f" target="_blank">🎥 Watch Recording</a>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EXkif-POLwxHqPKP3mo0vHkB1QVi3Vg5gNFOMfDz2bGV1w?e=ch8ioh" target="_blank">📄 Transcript</a><br>
+                    <a href="https://upmchs-my.sharepoint.com/:w:/g/personal/sohnae_upmc_edu/EaQ8rZx7oqVBtOSB_qV4s0EBCnzZsDZmyNjEDJUcv0vJDA?e=Mcb8rm" target="_blank">🧾 Take-Home</a>
+                    <a href="https://examplepages.z13.web.core.windows.net/aicoopermindmap.html" target="_blank">🗺 Mind Map</a><br>
+                    <a href="https://examplepages.z13.web.core.windows.net/aicooperprompt.html" target="_blank">🤖 Discuss with AI</a>
+                    <a href="https://examplepages.z13.web.core.windows.net/aicooperxword.html" target="_blank">Crossword</a>
+                </div>
+            </div>
+
+        </div><!-- /panel-shadyside -->
+
+        <!-- Panel: Bulletin Board -->
+        <div id="panel-bulletin" class="lecture-panel" role="tabpanel" aria-labelledby="tab-bulletin" hidden>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                <h3 style="margin: 0; color: #2c3e50;">📌 Community Bulletin Board</h3>
+                <button style="padding: 10px 15px; background: #5b21b6; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px; box-shadow: 0 4px #3b1578;" onmousedown="this.style.transform='translateY(2px)'; this.style.boxShadow='0 2px #3b1578';" onmouseup="this.style.transform='translateY(0px)'; this.style.boxShadow='0 4px #3b1578';">
+                    ➕ Post to Banner Dashboard
+                </button>
+            </div>
+
+            <!-- Bulletin Item: Genetics -->
+            <div id="bulletin-genomics-econsult" class="lecture-entry" style="border-left-color: #007BFF; border-right-color: #cce5ff;">
+                <strong class="lecture-title">Genetics & Genomics E-Consult</strong>
+                <p style="font-size: 13px; color: #555; margin-bottom: 5px;">Family history, testing questions, and referral uncertainty made clearer.</p>
+                <span style="font-size: 11px; color: #888; font-style: italic;">"Use before the case turns into a long ambiguity chain."</span>
+                
+                <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ccc; display: flex; gap: 15px; font-size: 13px;">
+                    <button style="background: none; border: 1px solid #ccc; border-radius: 4px; padding: 4px 8px; cursor: pointer;">👍 12</button>
+                    <span style="color: #666; display: flex; align-items: center;">💬 3 comments</span>
+                </div>
+            </div>
+
+            <!-- Bulletin Item: Migraine -->
+            <div id="bulletin-migraine-pathway" class="lecture-entry" style="border-left-color: #007BFF; border-right-color: #cce5ff;">
+                <strong class="lecture-title">Headache / Migraine Referral Pathway</strong>
+                <p style="font-size: 13px; color: #555; margin-bottom: 5px;">Cleaner route for refractory headache patients.</p>
+                <span style="font-size: 11px; color: #888; font-style: italic;">"Best when the chart is growing sideways."</span>
+                
+                <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ccc; display: flex; gap: 15px; font-size: 13px;">
+                    <button style="background: none; border: 1px solid #ccc; border-radius: 4px; padding: 4px 8px; cursor: pointer;">👍 8</button>
+                    <span style="color: #666; display: flex; align-items: center;">💬 1 comment</span>
+                </div>
+            </div>
+
+            <!-- Bulletin Item: Lifestyle -->
+            <div id="bulletin-lifestyle-medicine" class="lecture-entry" style="border-left-color: #007BFF; border-right-color: #cce5ff;">
+                <strong class="lecture-title">Lifestyle Medicine Shared Support</strong>
+                <p style="font-size: 13px; color: #555; margin-bottom: 5px;">Practical support for food, sleep, movement, and prevention.</p>
+                <span style="font-size: 11px; color: #888; font-style: italic;">"Mention early, not after every other lever fails."</span>
+                
+                <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ccc; display: flex; gap: 15px; font-size: 13px;">
+                    <button style="background: none; border: 1px solid #ccc; border-radius: 4px; padding: 4px 8px; cursor: pointer;">👍 24</button>
+                    <span style="color: #666; display: flex; align-items: center;">💬 7 comments</span>
+                </div>
+            </div>
+
+            <!-- Bulletin Item: Shared Savings -->
+            <div id="bulletin-shared-savings" class="lecture-entry" style="border-left-color: #007BFF; border-right-color: #cce5ff;">
+                <strong class="lecture-title">Shared Savings Thumb-Book</strong>
+                <p style="font-size: 13px; color: #555; margin-bottom: 5px;">Lighter-weight operational and value-oriented reference point.</p>
+                <span style="font-size: 11px; color: #888; font-style: italic;">"Good first stop when there must be a cleaner way."</span>
+                
+                <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ccc; display: flex; gap: 15px; font-size: 13px;">
+                    <button style="background: none; border: 1px solid #ccc; border-radius: 4px; padding: 4px 8px; cursor: pointer;">👍 19</button>
+                    <span style="color: #666; display: flex; align-items: center;">💬 2 comments</span>
+                </div>
+            </div>
+        </div><!-- /panel-bulletin -->
+
+        <div id="podcasts" class="archive-section">
+            <h3>🎧 Podcasts</h3>
+
+            <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQD-msHCIkWwQZwD3FnRSk3PARRMmhtOVe27hLF3i7fPPIw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=JdvnCW"
+               target="_blank" class="archive-link">
+               Opioid Supply — Podcast-of-Paper
+            </a>
+            <a href="#shy-opioid-supply" class="archive-link">↳ Jump to talk</a>
+
+            <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQDh9poi9A8iTZ_4oX8PcyscAWK9L6dX6BcQv5GOFSUeJWQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=RNlibg"
+               target="_blank" class="archive-link">
+               Pericarditis — Podcast-of-Paper
+            </a>
+            <a href="#shy-pericarditis" class="archive-link">↳ Jump to talk</a>
+
+            <a href="https://upmchs-my.sharepoint.com/:u:/g/personal/sohnae_upmc_edu/IQAPjhkp8wCWQ5uz6410PY1qAeAUPVFSTT1tx_mGCnnbZ48?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=JhYvYz"
+               target="_blank" class="archive-link">
+               Asymptomatic Severe CAD — Podcast-of-Paper
+            </a>
+            <a href="#shy-cad-detection" class="archive-link">↳ Jump to talk</a>
+
+            <a href="https://pitt-my.sharepoint.com/:u:/g/personal/aes95_pitt_edu/IQCicjkO3zXvTJHVqBbEvM8aAfRjCg_1TbNOzgfO7oOv96g?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0&e=rs5v99"
+               target="_blank" class="archive-link">
+               Hormone Therapy in Menopause — Podcast-of-Paper
+            </a>
+            <a href="#shy-menopause-hormone" class="archive-link">↳ Jump to talk</a>
+        </div>
+
+    </div><!-- /lecture-series -->
+</div><!-- /center-wrap -->
+
+<footer>CMI Handbook Prototype — Page last updated Jan 2026.</footer>
+
+<!-- Cloudflare Email Protection -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
+<!-- Main PWA & UI Logic -->
+<script>
+    let deferredPrompt;
+    const addToHomeScreenButton = document.getElementById('addToHomeScreenButton');
+    const installInstructions = document.getElementById('installInstructions');
+    const dismissInstructionsButton = document.getElementById('dismissInstructions');
+    const updateAppButton = document.getElementById('updateAppButton');
+    const showIosInstructionsButton = document.getElementById('showIosInstructionsButton');
+
+    function isIOS() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }
+
+    function setupButtons() {
+        const onIOS = isIOS();
+        const navigatorStandalone = window.navigator.standalone === true;
+        const displayModeStandalone = window.matchMedia('(display-mode: standalone)').matches;
+        const isLaunchedFromIcon = onIOS ? navigatorStandalone : displayModeStandalone;
+
+        if (addToHomeScreenButton) addToHomeScreenButton.style.display = 'none';
+        if (showIosInstructionsButton) showIosInstructionsButton.style.display = 'none';
+
+        if (!isLaunchedFromIcon) {
+            if (onIOS) {
+                if (showIosInstructionsButton) showIosInstructionsButton.style.display = 'inline-block';
+            }
+        }
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        const onIOS = isIOS();
+        const isLaunchedFromIcon = onIOS ? (window.navigator.standalone === true) : window.matchMedia('(display-mode: standalone)').matches;
+
+        if (!onIOS && !isLaunchedFromIcon) {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (addToHomeScreenButton) addToHomeScreenButton.style.display = 'inline-block';
+        }
+    });
+
+    if (addToHomeScreenButton) {
+        addToHomeScreenButton.addEventListener('click', async () => {
+            if (!isIOS() && deferredPrompt) {
+                deferredPrompt.prompt();
+                try {
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        addToHomeScreenButton.style.display = 'none';
+                    }
+                } catch (err) {
+                    console.error('Install prompt error:', err);
+                }
+                deferredPrompt = null;
+            }
+        });
+    }
+
+    if (showIosInstructionsButton) {
+        showIosInstructionsButton.addEventListener('click', () => {
+            if (installInstructions) installInstructions.style.display = 'block';
+        });
+    }
+
+    if (dismissInstructionsButton && installInstructions) {
+        dismissInstructionsButton.addEventListener('click', () => {
+            installInstructions.style.display = 'none';
+        });
+    }
+
+    if (updateAppButton) {
+        if (sessionStorage.getItem('refreshClicked') === 'true') {
+            updateAppButton.textContent = 'Refreshed!';
+            updateAppButton.disabled = false;
+            sessionStorage.removeItem('refreshClicked');
+        } else {
+            updateAppButton.textContent = 'Clear Cache & Refresh';
+            updateAppButton.disabled = false;
+        }
+
+        updateAppButton.addEventListener('click', async () => {
+            updateAppButton.textContent = 'Refreshing...';
+            updateAppButton.disabled = true;
+            sessionStorage.setItem('refreshClicked', 'true');
+
+            try {
+                if ('serviceWorker' in navigator) {
+                    let reg = await navigator.serviceWorker.getRegistration('/');
+
+                    if (!reg) {
+                        reg = await navigator.serviceWorker.register('/service-worker.js');
+                    }
+
+                    try { await reg.update(); } catch {}
+
+                    if (reg.waiting) {
+                        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+                    }
+
+                    reg.addEventListener('updatefound', () => {
+                        const nw = reg.installing;
+                        if (!nw) return;
+                        nw.addEventListener('statechange', () => {
+                            if (nw.state === 'installed' && reg.waiting) {
+                                reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+                            }
+                        });
+                    });
+                }
+
+                if ('caches' in window) {
+                    const keys = await caches.keys();
+                    await Promise.all(keys.map(key => caches.delete(key)));
+                }
+
+            } catch (err) {
+                console.error('Refresh failed:', err);
+            } finally {
+                const u = new URL('/index.html', location.origin);
+                u.searchParams.set('v', Date.now().toString());
+                location.replace(u.toString());
+            }
+        });
+    }
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js', { updateViaCache: 'none' })
+                .then(async (reg) => { try { await reg.update(); } catch {} })
+                .catch(console.error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', setupButtons);
+</script>
+
+<!-- Script to move "Clear Cache" button on desktop view -->
+<script>
+    (function () {
+        const titleBar = document.getElementById('title-container');
+        const toolbar = document.getElementById('appManagementButtons');
+        const mq = window.matchMedia('(min-width: 1100px)');
+        let placedInTitle = false;
+
+        function relocateUpdateButton() {
+            const btn = document.getElementById('updateAppButton');
+            if (!btn || !titleBar || !toolbar) return;
+
+            if (mq.matches && !placedInTitle) {
+                titleBar.appendChild(btn);
+                placedInTitle = true;
+            } else if (!mq.matches && placedInTitle) {
+                toolbar.prepend(btn);
+                placedInTitle = false;
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', relocateUpdateButton);
+        } else {
+            relocateUpdateButton();
+        }
+        mq.addEventListener('change', relocateUpdateButton);
+    })();
+</script>
+
+<!-- Lecture Tabs Logic -->
+<script>
+    (function () {
+        function setLectureTab(which) {
+            const tabCmi = document.getElementById('tab-cmi');
+            const tabSh = document.getElementById('tab-shadyside');
+            const tabBul = document.getElementById('tab-bulletin');
+            const panelCmi = document.getElementById('panel-cmi');
+            const panelSh = document.getElementById('panel-shadyside');
+            const panelBul = document.getElementById('panel-bulletin');
+            if (!tabCmi || !tabSh || !tabBul || !panelCmi || !panelSh || !panelBul) return;
+
+            const isCmi = which === 'cmi';
+            const isSh = which === 'sh';
+            const isBul = which === 'bul';
+
+            tabCmi.classList.toggle('active', isCmi);
+            tabSh.classList.toggle('active', isSh);
+            tabBul.classList.toggle('active', isBul);
+
+            tabCmi.setAttribute('aria-selected', isCmi ? 'true' : 'false');
+            tabSh.setAttribute('aria-selected', isSh ? 'true' : 'false');
+            tabBul.setAttribute('aria-selected', isBul ? 'true' : 'false');
+
+            tabCmi.tabIndex = isCmi ? 0 : -1;
+            tabSh.tabIndex = isSh ? 0 : -1;
+            tabBul.tabIndex = isBul ? 0 : -1;
+
+            panelCmi.hidden = !isCmi;
+            panelSh.hidden = !isSh;
+            panelBul.hidden = !isBul;
+        }
+
+        function syncTabToHash() {
+            if (!window.location.hash) return;
+            const target = document.querySelector(window.location.hash);
+            if (!target) return;
+
+            const panelCmi = document.getElementById('panel-cmi');
+            const panelSh = document.getElementById('panel-shadyside');
+            const panelBul = document.getElementById('panel-bulletin');
+
+            if (panelSh && panelSh.contains(target)) {
+                setLectureTab('sh');
+            } else if (panelBul && panelBul.contains(target)) {
+                setLectureTab('bul');
+            } else if (panelCmi && panelCmi.contains(target)) {
+                setLectureTab('cmi');
+            }
+
+            setTimeout(() => {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 70);
+        }
+
+        function initLectureTabs() {
+            const tabCmi = document.getElementById('tab-cmi');
+            const tabSh = document.getElementById('tab-shadyside');
